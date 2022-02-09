@@ -1,1 +1,14 @@
+WITH Ada.Text_IO,Ada.Integer_Text_IO,Outils,Gestion_Guildes;
+USE Ada.Text_IO,Ada.Integer_Text_IO,Outils,Gestion_Guildes;
 
+PROCEDURE Principal IS
+   G : T_Guilde;
+   C : T_Coach;
+   F : T_Fileg;
+BEGIN
+   Newguilde(G);
+   Enfiler_Guilde(F,G);
+   Visug(F.Teteg);
+   Dissolution(F.Teteg,G);
+   Visug(F.Teteg);
+END Principal;
