@@ -18,7 +18,7 @@ subtype t_mot is string (1..30);
          (Novice,
           Confirme,
           Expert,
-          MaiTre);
+          Maitre);
    TYPE T_Coach IS
       RECORD
          NomC      : T_Mot       := (OTHERS => ' ');
