@@ -8,26 +8,27 @@ PACKAGE  Gestion_Guildes IS
    TYPE T_CellG IS
       RECORD
          Guilde : T_Guilde;
-         Suiv   : T_Ptg;
-      END RECORD;
-   TYPE T_FileG IS
-      RECORD
-         Teteg,
-         Fing  : T_Ptg;
+         SuivG  : T_Ptg;
       END RECORD;
 
-   PROCEDURE Enfiler_Guilde (
-         F : IN OUT T_Fileg;
-         G : IN     T_Guilde);
+
+   FUNCTION Guilde_Existe (
+         Liste_G : IN     T_PtG;
+         Guilde  : IN     T_Guilde)
+     RETURN Boolean;
+   PROCEDURE Insertion_ListeG (
+         Liste_G : IN OUT T_PtG;
+         Guilde  : IN     T_Guilde);
+
    PROCEDURE Newguilde (
          G :    OUT T_Guilde);
+
    PROCEDURE Dissolution (
-         F :        T_Ptg;
-         G : IN OUT T_Guilde);
-   PROCEDURE Newguilde_Coach (
-         G      : IN OUT T_Guilde;
-         C      : IN OUT T_Coach;
-         Erreur :    OUT Boolean);
+         Liste_G : IN     T_PtG;
+         Guilde  : IN     T_Guilde);
+
+
    PROCEDURE VisuG (
          F : IN     T_Ptg);
+
 END Gestion_Guildes;
