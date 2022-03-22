@@ -1,19 +1,6 @@
 PACKAGE BODY Gestion_Guildes IS
 
-   PROCEDURE Enfiler_Guilde (
-         F : IN OUT T_Fileg;
-         G : IN     T_Guilde) IS
 
-   BEGIN
-      IF F.Teteg=NULL THEN
-         F.Teteg:= NEW T_Cellg'(G,NULL);
-         F.Fing:=F.Teteg;
-      ELSE
-         F.Fing.Suiv:= NEW T_Cellg'(G,NULL);
-         F.Fing:= F.Fing.Suiv;
-      END IF;
-
-   END Enfiler_Guilde;
 
    PROCEDURE Newguilde (
          G :    OUT T_Guilde) IS
@@ -38,43 +25,80 @@ PACKAGE BODY Gestion_Guildes IS
 
    END Newguilde;
 
+   FUNCTION Guilde_Existe (
+         Liste_G : IN     T_PtG;
+         Guilde  : IN     T_Guilde)
+     RETURN Boolean IS
 
-   PROCEDURE Dissolution (
-         F :        T_Ptg;
-         G : IN OUT T_Guilde) IS
-      --rendre les coach sansguilde necessite parcourir la liste des coach, comment faire pour eviter dependance ciculaire? mettre dissolution des guildes ds package coach?
+      P : T_PtG := Liste_G;
 
    BEGIN
-      IF F/=NULL THEN
-         IF F.Guilde=G THEN
-            F.Guilde.Dissoute:= True;
-            Put("La guilde ");
-            Put(G.Nomg);
-            Put(
-               " a ete dissoute, mais ne desesperez pas! Aprenez de vos erreurs, et le futur brillera pour vous ");
-         ELSIF F.Suiv/=NULL THEN
-            Dissolution(F.Suiv,G);
+
+      IF P /= NULL THEN
+         IF P.Guilde.NomG = Guilde.NomG THEN
+            RETURN True;
          ELSE
-            Put_Line("Cette guilde n'existe pas");
+            P := P.SuivG ;
          END IF;
       END IF;
-   END Dissolution;
+      RETURN False;
 
-   PROCEDURE Newguilde_Coach (
-         G      : IN OUT T_Guilde;
-         C      : IN OUT T_Coach;
-         Erreur :    OUT Boolean) IS
+   END Guilde_Existe;
+
+
+
+   PROCEDURE Insertion_ListeG (
+         Liste_G : IN OUT T_PtG;
+         Guilde  : IN     T_Guilde) IS
 
    BEGIN
-      IF C.Sansguilde THEN
-         G.Nb_Membres:=G.Nb_Membres+1;
-         C.Guilde:=G;
-         G.Pointsg:=G.Pointsg-1;
-         Put_Line("Felicitations pour le recrutement!");
+      IF NOT Guilde_Existe(Liste_G, Guilde) THEN
+         IF Liste_G = NULL THEN
+            Liste_G:= NEW T_CellG'(Guilde, NULL);
+         ELSE
+            Liste_G:= NEW T_CellG'(Guilde, Liste_G);
+         END IF;
       ELSE
-         Erreur:=True;
+         Put_Line ("une guilde a ce nom existe deja...");
       END IF;
-   END Newguilde_Coach;
+
+   END Insertion_ListeG;
+
+
+
+
+
+   PROCEDURE Dissolution (
+         Liste_G : IN     T_PtG;
+         Guilde  : IN     T_Guilde) IS
+      P : T_PtG := Liste_G;
+
+   BEGIN
+      IF Guilde_Existe (Liste_G,Guilde) THEN
+         WHILE P /= NULL LOOP
+            IF P.Guilde.NomG = Guilde.NomG THEN
+               IF P.Suivg/=NULL THEN
+                  P:=P.Suivg;
+               ELSE
+                  P:=NULL;
+               END IF;
+               Put_Line(
+                  "La guilde a ete dissoute, mais ne desesperez pas! Aprenez de vos erreurs, et le futur brillera pour vous ");
+            ELSE
+               P := P.SuivG ;
+
+            END IF;
+         END LOOP;
+
+      ELSE
+         Put_Line(
+            "La guilde n'a pas ete trouvee dans la liste, elle ne peut donc pas etre supprimee");
+
+      END IF;
+
+   END Dissolution;
+
+
 
    PROCEDURE VisuG (
          F : IN     T_Ptg) IS
@@ -92,7 +116,7 @@ PACKAGE BODY Gestion_Guildes IS
             Put(F.Guilde.Pointsg,3);
             New_Line;
          ELSE
-            Visug(F.Suiv);
+            Visug(F.Suivg);
          END IF;
       ELSE
          Put_Line("Il n'y a pas de guildes a ce moment...");
