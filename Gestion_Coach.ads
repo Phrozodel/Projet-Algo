@@ -1,18 +1,7 @@
-WITH Ada.Text_IO,Ada.Integer_Text_IO,Outils, Gestion_guildes;
-USE Ada.Text_IO,Ada.Integer_Text_IO,Outils, gestion_guildes;
+WITH Ada.Text_IO,Ada.Integer_Text_IO,Outils,gestion_Guildes;
+USE Ada.Text_IO,Ada.Integer_Text_IO,Outils,Gestion_Guildes;
 
-PACKAGE  Gestion_Coach IS
-
-   TYPE T_Expertise IS (Novice, Confirme, Expert,  Maitre);
-
-   TYPE T_Coach IS RECORD
-         NomC      : T_Mot:= (OTHERS  => ' ');
-         Expertise : T_Expertise := Novice;
-         Guilde    : T_Mot;
-         Nb_Pokes  : Integer:= 0; --Inferieur a 14
-         PointsC   : Integer:=6;
-         sansguilde: boolean:=true;
-      END RECORD;
+PACKAGE  gestion_coachs IS
 
 
    TYPE T_CellC;
@@ -29,7 +18,11 @@ PACKAGE  Gestion_Coach IS
    PROCEDURE Depart_Coach (Liste_C : IN T_PtC ; coach : IN OUT T_coach );
    PROCEDURE VisuCoach (Liste_C: IN T_PtC);
    PROCEDURE Transfert_Points (C1, C2 : IN OUT T_coach ; Liste_C : IN T_PtC) ;
-
-
-END Gestion_Coach;
-
+      PROCEDURE Newguilde_Coach (
+         Liste_G : IN     T_PtG;
+         Guilde  : IN OUT T_Guilde;
+         Coach   : IN OUT T_Coach;
+         Liste_C : IN     T_PtC;
+         Erreur  :    OUT Boolean;
+         Exist_error: out boolean);
+end gestion_coachs;
