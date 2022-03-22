@@ -1,5 +1,5 @@
-WITH Ada.Text_IO,Ada.Integer_Text_IO,Outils,  Gestion_Coach, aleatoire;
-USE Ada.Text_IO,Ada.Integer_Text_IO,Outils,  Gestion_Coach, aleatoire;
+WITH Ada.Text_IO,Ada.Integer_Text_IO,Outils,  Gestion_Coachs, aleatoire;
+USE Ada.Text_IO,Ada.Integer_Text_IO,Outils,  Gestion_Coachs, aleatoire;
 
 PACKAGE  Gestion_Poke IS
 
@@ -45,4 +45,3 @@ PACKAGE  Gestion_Poke IS
 
 
 end Gestion_Poke;
-
