@@ -2,7 +2,6 @@ PACKAGE BODY Outils IS
    PROCEDURE Rien IS
 
    BEGIN
-      Put("Sed is the best");
+      Put("test");
    END Rien;
 END Outils;
-
