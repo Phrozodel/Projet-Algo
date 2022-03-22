@@ -1,14 +1,24 @@
-WITH Ada.Text_IO,Ada.Integer_Text_IO,Outils,Gestion_Guildes;
-USE Ada.Text_IO,Ada.Integer_Text_IO,Outils,Gestion_Guildes;
+WITH Ada.Text_IO,Ada.Integer_Text_IO,Outils,Gestion_Guildes,Gestion_Coachs,Gestion_Poke;
+USE Ada.Text_IO,Ada.Integer_Text_IO,Outils,Gestion_Guildes,Gestion_Coachs,
+   Gestion_Poke;
 
 PROCEDURE Principal IS
-   G : T_Guilde;
-   C : T_Coach;
-   F : T_Fileg;
+   G       : T_Guilde;
+   Liste_G : T_Ptg;
+   C: t_coach;
+   Liste_C : T_PtC;
 BEGIN
+   Put_Line("bienvenu");
    Newguilde(G);
-   Enfiler_Guilde(F,G);
-   Visug(F.Teteg);
-   Dissolution(F.Teteg,G);
-   Visug(F.Teteg);
+   Insertion_ListeG (
+      Liste_G,G);
+   Visug(Liste_G);
+--   Dissolution(
+--      Liste_G,G);
+--   Visug(Liste_G);
+NewCoach (C);
+Insertion_ListeC (Liste_C,C );
+VisuCoach (Liste_C);
+
+
 END Principal;
