@@ -1,24 +1,141 @@
-WITH Ada.Text_IO,Ada.Integer_Text_IO,Outils,Gestion_Guildes,Gestion_Coachs,Gestion_Poke;
-USE Ada.Text_IO,Ada.Integer_Text_IO,Outils,Gestion_Guildes,Gestion_Coachs,
-   Gestion_Poke;
+WITH Ada.Text_IO,Ada.Integer_Text_IO,Outils, Gestion_Coach, Gestion_Poke,
+   Gestion_Guildes, Gestion_tournois, sauvegarde;
+USE Ada.Text_IO,Ada.Integer_Text_IO,Outils, Gestion_Coach, Gestion_Poke,
+   Gestion_Guildes, Gestion_tournois, sauvegarde;
 
 PROCEDURE Principal IS
-   G       : T_Guilde;
-   Liste_G : T_Ptg;
-   C: t_coach;
+
+   Coach,C, C1, C2, C_Vainqueur,C_perdant : T_Coach;
+   P, P1, P2 : T_Poke;
+   Liste_P, Pt1, Pt2 : T_PtP;
    Liste_C : T_PtC;
+   Tabl    : T_Tabl_Expertise;
+   G, G1, G2 : T_Guilde;
+   Liste_G : T_PtG;
+   k : integer;
+   Choix, Rep : Integer ;
+   Stat : T_Stats;
+   pp : T_PtC := Liste_C;
+
 BEGIN
-   Put_Line("bienvenu");
-   Newguilde(G);
-   Insertion_ListeG (
-      Liste_G,G);
-   Visug(Liste_G);
---   Dissolution(
---      Liste_G,G);
---   Visug(Liste_G);
-NewCoach (C);
-Insertion_ListeC (Liste_C,C );
-VisuCoach (Liste_C);
+   
+      Put_Line ("Bienvenue au monde des pokes! Ici vous retrouverez des coachs passionnes, des Pokes fantastiques et des batailles acharnees"); New_line;
+         LOOP
+            Put_Line ("Quelle type d'Action Voulez - Vous Realiser ?");
+               Put_Line ("1 : Gerer Une Guilde");
+               Put_Line ("2 : Gerer Un Coach");
+               Put_Line ("3 : Gerer Un Poke");
+               Put_Line ("4 : Lancer Un Tournoi ");
+               Put_Line ("5 : Consulter Les Statistiques");
+               Put_Line ("6 : Sauvegarder / Restaurer Votre Progression");
+               Put_Line ("7 : Quitter l'INTERFACE");
 
+         Get(Choix); Skip_Line;
+         New_Line;
 
-END Principal;
+               CASE Choix IS
+                  WHEN 1 => 	Put_Line ("Vous Pouvez :");
+                     Put_Line ("1 : Creer Une Guilde");
+                     Put_Line ("2 : Dissoudre Une Guilde");
+                     Put_Line ("3 : Integrer Un Coach");
+                     Put_Line ("4 : Visualiser Les Guildes");
+
+                     Get (Rep); Skip_Line;
+               New_Line;
+                     CASE Rep IS
+                        WHEN 1 => NewGuilde(G); New_line; Insertion_ListeG (Liste_G,G);
+                        WHEN 2 => Put_Line("nom de la guilde :"); get_line(G.NomG,k);
+                                  Dissolution(Liste_G,G); new_line;
+--                        WHEN 3 =>
+                        WHEN 4 => VisuG(Liste_G); new_line;
+                        WHEN OTHERS => Put_Line( "Oups.. Ce Choix N'Existe Pas&"); New_Line;
+
+                     END CASE ;
+
+                  WHEN 2 =>	Put_Line ("Vous Pouvez Enregistrer:");
+                        Put_Line ("1 : L'Arrivee D'Un Coach");
+                        Put_Line ("2 : Le Depart D'Un Coach");
+                        Put_Line ("3 : L'Adoption D'Un Poke");
+                        Put_Line ("4 : Un Transfert De Points");
+                        Put_Line ("5 : Visualiser Les Coachs");
+                        Get (Rep); Skip_Line;
+
+                        CASE Rep IS
+                           WHEN 1 => NewCoach(C, Liste_G); New_line; Insertion_ListeC (Liste_C, C);
+                           WHEN 2 => Depart_Coach(Liste_C, C);
+                           WHEN 3 => Adoption_P(Liste_P, P, Liste_C, C);
+--                           WHEN 4 =>
+                           WHEN 5 => VisuCoach(Liste_C);
+                           WHEN OTHERS => Put_Line( "Oups.. Ce Choix N'Existe Pas&"); New_Line;
+
+                        END CASE ;
+
+                     WHEN 3 => 	Put_Line ("Vous Pouvez:");
+                           Put_Line ("1 : Creer Un Poke");
+                           Put_Line ("2 : Faire Disparaitre Un Poke");
+                           Put_Line ("3 : Soigner Un Poke");
+                           Put_Line ("4 : Visualiser Les Pokes");
+                           Get (Rep); Skip_Line;
+
+                           CASE Rep IS
+                              WHEN 1 => NewPoke(P); New_line; Insertion_ListeP(Liste_P, P);
+                              WHEN 2 => Disparition_P(Liste_P, P, Liste_C);
+--                              WHEN 3 => Soin_P (Liste_P, P, Liste_C);
+                              WHEN 4 => VisuPoke(Liste_P);
+                              WHEN OTHERS => Put_Line( "Oups.. Ce Choix N'Existe Pas&"); New_Line;
+
+                           END CASE ;
+
+--                        WHEN 4 => Lance_Tournoi (C1,C2,P1,P2, Liste_P, Liste_C, Liste_G, Stat);
+                        WHEN 5 =>	Put_Line ("Vous Pouvez Visualiser:");
+                              Put_Line ("1 : Le Nombre De Tournois");
+                              Put_Line ("2 : Le Nombre De Matchs Nuls");
+                              Put_Line ("3 : Le Nombre De Victoires Par Categorie De Poke");
+                              Put_Line ("4 : Le Nombre De Victoires Par Niveau D'Expertise");
+                              Get (Rep); Skip_Line;
+
+                              CASE Rep IS
+                                 WHEN 1 => Put(Stat.Nb_tournois); new_line;
+                                 WHEN 2 => Put(Stat.Nb_match_nul); new_line;
+                                 WHEN 3 => Put("Nombre de victoires de Pokes type AIR : "); Put(Victoire_cat(Air)); new_line;
+                                 Put("Nombre de victoires de Pokes type FEU : "); Put(Victoire_cat(Feu)); New_Line;
+                                 Put("Nombre de victoires de Pokes type TERRE : "); Put(Victoire_cat(Terre)); New_Line;
+                                 Put("Nombre de victoires de Pokes type EAU : "); Put(Victoire_cat(Eau)); new_line;
+                                 WHEN 4 => Put("Nombre de victoires de coachs Novice : "); Put(Victoire_Exp(Novice)); new_line;
+                                 Put("Nombre de victoires de coachs Confirme : "); Put(Victoire_Exp(Confirme)); New_Line;
+                                 Put("Nombre de victoires de coachs Expert : "); Put(Victoire_Exp(Expert)); New_Line;
+                                 Put("Nombre de victoires de coachs Maitre : "); Put(Victoire_Exp(Maitre)); new_line;
+                                 WHEN OTHERS => Put_Line( "Oups.. Ce Choix N'Existe Pas&"); New_Line;
+
+                              END CASE ;
+
+                           WHEN 6 =>	Put_Line ("Vous Pouvez:");
+                                 Put_Line ("1 : Sauvegarder");
+                                 Put_Line ("2 : Restaurer");
+                                 Get (Rep); Skip_Line;
+
+                                 CASE Rep IS
+                                       WHEN 1 => Sauvegarde_ListeG(G, Liste_G); 
+                                       Sauvegarde_ListeC(C, Liste_C);
+                                       Sauvegarde_ListeP(P, Liste_P);
+                                       Sauvegarde_stat(stat);
+                                       sauvegarde_tabl_exp(Victoire_exp);
+                                       sauvegarde_tabl_cat(Victoire_cat);
+                                      WHEN 2 => Restaure_Guilde(G, Liste_G);
+                                       Restaure_Coach(C, Liste_C);
+                                       Restaure_Poke(P, Liste_P);
+                                       Restaure_stat(stat);
+                                       Restaure_Tabl_exp(Victoire_Exp);
+                                       Restaure_Tabl_cat(Victoire_Cat);
+                                    WHEN OTHERS => Put_Line( "Oups.. Ce Choix N'Existe Pas"); New_Line;
+
+                                 END CASE ;
+
+                              WHEN 7 => EXIT;
+                              WHEN OTHERS => Put_Line( "Oups.. Ce Choix N'Existe Pas&"); New_Line;
+
+                           END CASE;
+                        END LOOP;
+
+                     END Principal;
+
