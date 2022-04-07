@@ -253,7 +253,6 @@ PACKAGE BODY gestion_tournois IS
    PROCEDURE Actua_PtsC (C_Vainqueur,C_perdant : IN T_Coach ; ListeC : IN OUT T_PtC) IS
       P : T_PtC := ListeC;
       PtsVainq, PtsPerd : Integer;
-      Gain : T_Tabl_Expertise;
 
    BEGIN
 
