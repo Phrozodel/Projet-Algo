@@ -93,7 +93,8 @@ PACKAGE  Gestion_Poke IS
   PROCEDURE VisuPoke (Liste_P : IN T_PtP);
   PROCEDURE Disparition_P (Liste_P : IN T_PtP ; Poke : IN OUT T_Poke; Liste_C : IN T_PtC);
   PROCEDURE Adoption_P (Liste_P : IN T_PtP ; Poke : IN OUT T_Poke; Liste_C: IN T_PtC; Coach : OUT T_coach);
-  PROCEDURE Soin_P (Liste_P : IN T_PtP ; Poke : IN OUT T_Poke; Liste_C : IN T_PtC );
+  PROCEDURE Soin_P (Liste_P : IN OUT T_PtP ; Poke : OUT T_Poke; Liste_C : IN T_PtC );
+  PROCEDURE Supprime_Poke(Liste_P : IN OUT T_PtP; Poke : IN T_Poke);
 
 
 
