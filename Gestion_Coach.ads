@@ -53,10 +53,11 @@ PACKAGE  Gestion_Coach IS
    PROCEDURE Depart_Coach (Liste_C : IN OUT T_PtC ; coach : IN OUT T_coach );
    PROCEDURE VisuCoach (Liste_C: IN T_PtC);
    PROCEDURE Transfert_Points (C1, C2 : IN OUT T_coach ; Liste_C : IN OUT T_PtC) ;
-   --
-   PROCEDURE Newguilde_Coach (Liste_G : IN T_PtG; Guilde : IN OUT T_Guilde; Coach : IN OUT T_Coach; Liste_C : IN T_PtC; Erreur : OUT Boolean; Exist_error: out boolean);
+--
+   PROCEDURE Newguilde_Coach (Liste_G : IN T_PtG; Guilde : OUT T_Guilde; Coach : OUT T_Coach; Liste_C : IN T_PtC; Erreur : OUT Boolean; Exist_error: out boolean);
    PROCEDURE Sansguilde (Liste_C : IN T_PtC; Guilde : IN T_Guilde);
 
 
 END Gestion_Coach;
+
 
