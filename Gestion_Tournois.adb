@@ -289,15 +289,15 @@ PROCEDURE Actua_PtsG (C_Vainqueur,C_perdant : IN T_Coach ; ListeG : IN OUT T_PtG
 BEGIN
 
       WHILE P/=NULL LOOP
-         IF P.guilde.NomG = C_Vainqueur.guilde THEN
-            P.guilde.PointsG := P.guilde.PointsG  + 2;
+         IF P.Guilde.NomG = C_Vainqueur.Guilde THEN
+         P.Guilde.PointsG := P.Guilde.PointsG  + 2;
          ELSIF P.guilde.NomG = C_perdant.guilde THEN
          P.Guilde.PointsG := P.Guilde.PointsG  - 2;
          IF P.Guilde.PointsG <=0 THEN Dissolution(ListeG,P.Guilde);
          Sansguilde (ListeC,P.Guilde);
-         ELSE P:=P.SuivG;
-         end if;
          END IF;
+         END IF;
+      P:=P.SuivG;
    END LOOP;
 
    END Actua_PtsG;
@@ -380,6 +380,8 @@ BM(Air,Air):=0;
 --                       END IF;
 
                         Stat.Nb_Tournois := Stat.Nb_Tournois+1;
+--                        Actua_PtsG (C_Vainqueur,C_perdant,ListeG,ListeC);
+                          Actua_PtsC (C_Vainqueur,C_perdant,ListeC);
 
                       else put_line("erreur : les coachs doivent avoir au moins 1 poke non KO");
                       end if;
@@ -399,6 +401,9 @@ BM(Air,Air):=0;
 
 
 END gestion_tournois;
+
+
+
 
 
 
