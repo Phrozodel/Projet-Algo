@@ -305,6 +305,7 @@ END Gestion_Poke;
 ---------------- nouvelle version sedna --------------
 
 
+
 PACKAGE BODY Gestion_Poke IS
 
    -- fonction pour vérifier qu'un poke existe dans la liste (à partir de son nom donné) --
@@ -445,7 +446,7 @@ PACKAGE BODY Gestion_Poke IS
 
    -- procedure pour soigner un poke --
 
-   PROCEDURE Soin_P (Liste_P : IN T_PtP ; Poke : IN OUT T_Poke; Liste_C : IN T_PtC) IS
+   PROCEDURE Soin_P (Liste_P : IN OUT T_PtP ; Poke : OUT T_Poke; Liste_C : IN T_PtC) IS
 
       P : T_PtP := Liste_P;
       C : T_PtC := Liste_C;
@@ -463,41 +464,57 @@ PACKAGE BODY Gestion_Poke IS
             ELSIF P.Poke.PV /= 0 THEN Put_Line ("impossible, ce poke n'est pas KO"); exit;
             ELSE
                WHILE C/=NULL LOOP
-                  IF C.Coach.NomC = Poke.Coach THEN
+                  IF C.Coach.NomC = P.poke.Coach THEN
                      IF C.Coach.PointsC >= 2 THEN
                         B := Borne(C.coach.expertise);
-                        Initialise (1,b); n:= random;
-                        Put("choisissez un entier entre 0 et "); Put(b); Put(" Vous avez 5 essais.");
+                        Initialise (1,2); n:= random;
+                        Put("choisissez un entier entre 0 et "); Put(2); Put(" Vous avez 5 essais.");
                         new_line;
-                        Get (Ent);
+                        
 
                         FOR I IN 1..5 LOOP
-                           IF Ent = b THEN Put_Line ("Bravo vous avez reussi ! ");
-                              Put(Poke.NomP); Put(" est guéri"); New_Line;
-                              Poke.PV := 6; trouve := true; exit;
-                           ELSIF Ent > b THEN Put_Line("l'entier cherché est plus petit");
-                           ELSE Put_Line("l'entier cherché est plus grand");
+                           Get (Ent);
+                           IF Ent = 2 THEN Put_Line ("Bravo vous avez reussi ! ");
+                              Put(Poke.NomP); Put(" est gueri"); New_Line;
+                              P.poke.PV := 6; trouve := true; exit;
+                           ELSIF Ent > 2 THEN Put_Line("l'entier cherche est plus petit");
+                           ELSE Put_Line("l'entier cherche est plus grand");
                            end if;
                         END LOOP;
 
-                          If not trouve then Disparition_P (Liste_P, Poke, Liste_C);
+                        IF NOT Trouve THEN 
+                           Put_line("vous avez perdu... le poke va disparaitre...");
+                           supprime_poke(Liste_P, Poke);
                           end if;
 
                      ELSE Put_Line("le coach n'a pas assez de points");
                      END IF;
-                  ELSE C:=C.SuivC;
                   END IF;
+                C:=C.SuivC;
                END LOOP;
 
 
             END IF;
-         ELSE P:= P.SuivP;
          END IF;
+         P:= P.SuivP;
       END LOOP;
 
 
 
    END Soin_P ;
+   
+   -- suppression d'un poke -- 
+   
+   PROCEDURE Supprime_Poke (Liste_P : IN OUT T_PtP; Poke : IN T_Poke) is
+   
+   BEGIN
+      IF Liste_P = NULL THEN NULL;
+      ELSIF Liste_P.poke.NomP = Poke.NomP THEN Liste_P:= Liste_P.SuivP;
+      ELSE Supprime_Poke(Liste_P.SuivP, Poke);
+      end if;
+      
+   END Supprime_Poke;
+   
 
 
    -- adoption Poke --
@@ -520,7 +537,7 @@ PACKAGE BODY Gestion_Poke IS
       Get_Line(Poke.NomP, K);
       IF NOT Poke_Existe(Liste_P, Poke) THEN Put_Line("ce poke n'existe pas");
       Elsif p = NULL THEN Put_Line ("il n'y a pas de pokes a ce moment");
-      Elsif Poke_Existe(Liste_P, Poke) THEN 
+      Elsif Poke_Existe(Liste_P, Poke) THEN
          while p/=null loop
          IF P.Poke.NomP = Poke.NomP THEN
                p.Poke.Orphelin:= False;
@@ -545,3 +562,4 @@ PACKAGE BODY Gestion_Poke IS
    END Adoption_P ;
 
 end Gestion_Poke;
+
