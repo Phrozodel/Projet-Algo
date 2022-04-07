@@ -380,7 +380,7 @@ BM(Air,Air):=0;
 --                       END IF;
 
                         Stat.Nb_Tournois := Stat.Nb_Tournois+1;
---                        Actua_PtsG (C_Vainqueur,C_perdant,ListeG,ListeC);
+                       Actua_PtsG (C_Vainqueur,C_perdant,ListeG,ListeC);
                           Actua_PtsC (C_Vainqueur,C_perdant,ListeC);
 
                       else put_line("erreur : les coachs doivent avoir au moins 1 poke non KO");
