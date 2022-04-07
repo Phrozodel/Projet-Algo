@@ -275,8 +275,6 @@ END Gestion_Coachs;
 
 ---------------- nouvelle version sedna ---------
 
-
-
 PACKAGE BODY Gestion_Coach IS
 
    -- fonction pour vérifier qu'un coach existe dans la liste (à partir de son nom donné) --
@@ -464,22 +462,35 @@ PACKAGE BODY Gestion_Coach IS
    END Transfert_Points ;
 
    --------------
-   PROCEDURE Newguilde_Coach (Liste_G : IN T_PtG; Guilde: IN OUT T_Guilde;
-         Coach : IN OUT T_Coach; Liste_C : IN T_PtC; Erreur : OUT Boolean;
+   PROCEDURE Newguilde_Coach (Liste_G : IN T_PtG; Guilde: OUT T_Guilde;
+         Coach : OUT T_Coach; Liste_C : IN T_PtC; Erreur : OUT Boolean;
          Exist_Error : OUT Boolean) IS
+     
       P  : T_PtG := Liste_G;
       PC : T_PtC := Liste_C;
+      K, K2 : Integer;
+      
    BEGIN
+      
+      Put("nom de la guilde : "); Get_Line(Guilde.NomG, K);
+      Put("nom du coach : "); get_line(coach.nomC, k2);
+      
       Exist_Error:=False;
       IF Guilde_Existe (Liste_G,Guilde) AND Coach_Existe(Liste_C,Coach) THEN
          IF Coach.Sansguilde THEN
             WHILE P /= NULL LOOP
                IF P.Guilde.NomG = Guilde.NomG THEN
                   P.Guilde.Nb_Membres:=P.Guilde.Nb_Membres+1;
+                  WHILE PC/=NULL LOOP
+                     If Pc.coach.nomC = coach.nomC then 
                   PC.Coach.Guilde:=P.Guilde.Nomg;
                   PC.Coach.SansGuilde:=False;
                   P.Guilde.Pointsg:=P.Guilde.Pointsg-1;
-                  Put_Line("Felicitations pour le recrutement!");
+                        Put_Line("Felicitations pour le recrutement!"); EXIT;
+                     END IF;
+                     PC:=Pc.Suivc;
+                  END LOOP;
+                  exit;
                ELSE
                   P := P.SuivG ;
 
@@ -514,4 +525,5 @@ PROCEDURE Sansguilde (Liste_C : IN T_PtC; Guilde : IN T_Guilde) IS
 
 
 END Gestion_Coach;
+
 
